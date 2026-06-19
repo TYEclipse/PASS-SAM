@@ -107,11 +107,14 @@ If you use PASS-SAM in your research, please cite:
 
 ```bibtex
 @article{tang2025passsam,
-  title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
-  author={Tang, Yin and others},
-  journal={Computational Visual Media (CVMJ)},
-  year={2025},
-  doi={10.26599/CVM.2025.9450432}
+  author    = {Tang, Yin and Chen, Rui and Pei, Gensheng and Wang, Qiong},
+  title     = {PASS-SAM: Integration of Segment Anything Model for Large-Scale Unsupervised Semantic Segmentation},
+  journal   = {Computational Visual Media},
+  year      = {2025},
+  volume    = {11},
+  number    = {3},
+  pages     = {669--674},
+  doi       = {10.26599/CVM.2025.9450432},
 }
 ```
 
@@ -170,9 +173,13 @@ python demo.py --image your_image.jpg
 
 ```bibtex
 @article{tang2025passsam,
-  title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
-  author={唐印 等},
-  journal={计算可视媒体 (CVMJ)},
-  year={2025}
+  author    = {唐印 and 陈锐 and 裴根生 and 王琼},
+  title     = {PASS-SAM: Integration of Segment Anything Model for Large-Scale Unsupervised Semantic Segmentation},
+  journal   = {Computational Visual Media},
+  year      = {2025},
+  volume    = {11},
+  number    = {3},
+  pages     = {669--674},
+  doi       = {10.26599/CVM.2025.9450432},
 }
 ```
