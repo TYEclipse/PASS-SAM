@@ -6,7 +6,7 @@
 
 **🏆 1st Place Solution for the Jittor Large-scale Unsupervised Semantic Segmentation Challenge**
 
-[![Paper](https://img.shields.io/badge/Paper-CVMJ%202024-blue)](https://doi.org/10.26599/CVM.2025.9450432)
+[![Paper](https://img.shields.io/badge/Paper-CVMJ%202025-blue)](https://doi.org/10.26599/CVM.2025.9450432)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Jittor](https://img.shields.io/badge/Framework-Jittor-red)](https://github.com/Jittor/jittor)
 
@@ -101,11 +101,11 @@ Place checkpoints in:
 If you use PASS-SAM in your research, please cite:
 
 ```bibtex
-@article{tang2024passsam,
+@article{tang2025passsam,
   title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
   author={Tang, Yin and others},
   journal={Computational Visual Media (CVMJ)},
-  year={2024},
+  year={2025},
   doi={10.26599/CVM.2025.9450432}
 }
 ```
@@ -142,7 +142,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ## 🇨🇳 中文版
 
-PASS-SAM 将 Segment Anything Model (SAM) 集成到 PASS 自监督框架中，用于大规模无监督语义分割。本方案在**第三届计图人工智能挑战赛**中获得**第一名**（2023年），论文发表于 CVMJ 2024。
+PASS-SAM 将 Segment Anything Model (SAM) 集成到 PASS 自监督框架中，用于大规模无监督语义分割。本方案在**第三届计图人工智能挑战赛**中获得**第一名**（2023年），论文发表于 CVMJ 2025。
 
 ### 方案核心
 
@@ -162,10 +162,10 @@ python demo.py --image your_image.jpg
 ### 引用
 
 ```bibtex
-@article{tang2024passsam,
+@article{tang2025passsam,
   title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
   author={唐印 等},
   journal={计算可视媒体 (CVMJ)},
-  year={2024}
+  year={2025}
 }
 ```
