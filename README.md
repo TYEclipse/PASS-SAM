@@ -173,7 +173,7 @@ python demo.py --image your_image.jpg
 
 ```bibtex
 @article{tang2025passsam,
-  author    = {唐印 and 陈锐 and 裴根生 and 王琼},
+  author    = {Tang, Yin and Chen, Rui and Pei, Gensheng and Wang, Qiong},
   title     = {PASS-SAM: Integration of Segment Anything Model for Large-Scale Unsupervised Semantic Segmentation},
   journal   = {Computational Visual Media},
   year      = {2025},
