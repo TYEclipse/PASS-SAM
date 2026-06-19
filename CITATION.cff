@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use PASS-SAM in your research, please cite the following paper."
+authors:
+  - family-names: "Tang"
+    given-names: "Yin"
+    orcid: ""
+title: "PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation"
+type: article
+journal: "Computational Visual Media (CVMJ)"
+year: 2024
+repository-code: "https://github.com/TYEclipse/PASS-SAM"
+abstract: "We integrate the Segment Anything Model (SAM) into the PASS self-supervised framework for large-scale unsupervised semantic segmentation, achieving 1st place in the 3rd Jittor AI Challenge."
