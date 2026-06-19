@@ -14,11 +14,11 @@ PASS-SAM integrates the Segment Anything Model (SAM) into the PASS self-supervis
 
 ## 🔥 Highlights
 
-- **SAM-powered pseudo-label refinement** — leverages SAM's zero-shot masks to dramatically improve pseudo-label quality
-- **Dual-model ensemble** — ResNet18 + ResNet34 with complementary attention mechanisms
-- **Self-attention enhanced pixel attention** — improved feature representation for fine-grained segmentation
-- **CRF post-processing** — conditional random fields for boundary refinement
-- **409.2M params / 97.8 GMACs** — efficient enough to run on a single GPU
+- **Self-attention augmented pixel-attention** — global dependencies + local pixel attention for superior pseudo-label quality
+- **Asymmetric dual-model pre-training** — ResNet18 (pixel-attention) + ResNet34 (self-attention enhanced)
+- **External attention segmentation head** — EANet-based head (Guo et al., TPAMI 2023) for pseudo-label fine-tuning
+- **CRF + SAM refined pseudo masks** — high-quality pseudo-labels with retraining strategy
+- **Progressive inference pipeline** — Ensemble → CRF → SAM → PerSAM, each step lifts mIoU
 
 ## 🚀 Quick Start
 
@@ -32,21 +32,8 @@ cd PASS-SAM
 
 ### Demo: Single Image Inference
 
-```python
-import jittor as jt
-from demo import PASS_SAM
-
-# Load model (downloads checkpoint automatically)
-model = PASS_SAM.from_pretrained("TYEclipse/PASS-SAM")
-
-# Run inference
-mask = model.segment("your_image.jpg")
-mask.save("output.png")
-```
-
-Or from command line:
-
 ```bash
+# Download pretrained checkpoints from Releases and extract to weight/
 python demo.py --image your_image.jpg --output output.png
 ```
 
@@ -76,12 +63,30 @@ python test.py
 
 ## 📈 Results
 
-| Method | Backbone | mIoU (50 classes) | 
-|--------|----------|-------------------|
-| PASS (baseline) | ResNet18 | 23.4 |
-| PASS-SAM (ours) | ResNet18 | 28.1 |
-| PASS-SAM (ours) | ResNet34 | 29.3 |
-| **PASS-SAM Ensemble** | **R18 + R34** | **30.7** |
+### ImageNet-S50 Validation Set
+
+| Method | mIoU | b-mIoU | Img-Acc | Fβ |
+|--------|------|--------|---------|-----|
+| MDC | 4.0 | — | — | — |
+| PiCIE | 5.0 | — | — | — |
+| PASSs | 29.2 | 7.6 | 66.2 | 49.0 |
+| PASSp | 32.4 | 7.2 | 62.9 | 48.7 |
+| **PASS-SAM (ours)** | **61.1** | **36.2** | **93.9** | **67.7** |
+
+> *S.: Small; M.S.: Medium-Small; M.L.: Medium-Large; L: Large*
+
+### Ablation Study (Test Set)
+
+| Configuration | mIoU |
+|---------------|------|
+| Baseline (PASS) | 33.1 |
+| + External Attention Head (R18) | 41.2 |
+| → ResNet34 Backbone | 42.6 |
+| + Self-Attention Head (R34) | 44.7 |
+| + Model Ensemble (R18+R34) | 45.9 |
+| + CRF Refinement | 47.1 |
+| + SAM Refinement | 49.5 |
+| + PerSAM Enhancement | **63.5** |
 
 ## 📦 Pretrained Models
 
@@ -146,10 +151,12 @@ PASS-SAM 将 Segment Anything Model (SAM) 集成到 PASS 自监督框架中，�
 
 ### 方案核心
 
-- **SAM 伪标签优化**：利用 SAM 零样本分割能力提升伪标签质量
-- **双模型集成**：ResNet18（PASS框架）+ ResNet34（Self-Attention增强）
-- **CRF 后处理**：条件随机场优化边界
-- **多阶段推理**：集成→CRF→SAM→PerSAM 四步优化
+- **自注意力增强像素注意力**：在 PASS 的像素注意力基础上引入自注意力机制，增强全局特征捕获能力
+- **非对称双模型预训练**：ResNet18（像素注意力头）+ ResNet34（自注意力增强头）
+- **外部注意力分割头**：基于 EANet（Guo et al., TPAMI 2023）构建分割头，用于伪标签微调
+- **CRF + SAM 伪标签精炼**：利用 CRF 和 SAM 生成高质量伪标签，并重训练分割头
+- **渐进式推理流水线**：集成 → CRF → SAM → PerSAM，每步均提升 mIoU
+- **验证集 mIoU 61.1，测试集 mIoU 63.5**（ImageNet-S50）
 
 ### 快速开始
 
