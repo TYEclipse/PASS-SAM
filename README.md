@@ -6,7 +6,7 @@
 
 **🏆 1st Place Solution for the Jittor Large-scale Unsupervised Semantic Segmentation Challenge**
 
-[![Paper](https://img.shields.io/badge/Paper-CVMJ%202024-blue)](https://example.com/paper)
+[![Paper](https://img.shields.io/badge/Paper-CVMJ%202024-blue)](https://doi.org/10.26599/CVM.2025.9450432)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Jittor](https://img.shields.io/badge/Framework-Jittor-red)](https://github.com/Jittor/jittor)
 
@@ -105,7 +105,8 @@ If you use PASS-SAM in your research, please cite:
   title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
   author={Tang, Yin and others},
   journal={Computational Visual Media (CVMJ)},
-  year={2024}
+  year={2024},
+  doi={10.26599/CVM.2025.9450432}
 }
 ```
 
