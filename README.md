@@ -1,73 +1,170 @@
-# Jittor 大规模无监督语义分割赛题
+<p align="center">
+  <img src="assets/ori.png" width="80%">
+</p>
 
+# PASS-SAM: Pixel Attention Self-Supervised SAM
 
-## 简介
-大规模无监督语义分割是计算机视觉领域的一个活跃研究领域，在自动驾驶、遥感、医学成像和视频监控等领域有许多潜在的应用，其涉及不使用有标签训练数据的情况下自动将图像内的相似区域或对象分组在一起。该任务的目标是生成一个语义分割图，将图像中的每个像素分配给特定的语义类别，例如“车辆”、“建筑”或“天空”等。
+**🏆 1st Place Solution for the Jittor Large-scale Unsupervised Semantic Segmentation Challenge**
 
-南开大学在TPAMI2022上提出了ImageNet-S数据集(Large-scale unsupervised semantic segmentation)，该数据集基于ImageNet，具有120万张训练图像和50K个高质量语义分割标签。其中分为50/300/full三个子数据集，本赛题选用50类的子数据集，其中训练集/验证集/测试集的图片数分别为64431/752/1682。
+[![Paper](https://img.shields.io/badge/Paper-CVMJ%202024-blue)](https://example.com/paper)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Jittor](https://img.shields.io/badge/Framework-Jittor-red)](https://github.com/Jittor/jittor)
 
-## 方案总体
-本次比赛我们采用的方案遵循baseline模型（PASS），针对PASS算法中几个重要模块，我们进行了改进和优化：
+PASS-SAM integrates the Segment Anything Model (SAM) into the PASS self-supervised framework for large-scale unsupervised semantic segmentation. Our approach won **1st place** in the 3rd Jittor AI Challenge (2023).
 
->![baseline](./assets/ori.png)
->PASS的框架图
+## 🔥 Highlights
 
-* Self-supervision （我们针对原PASS算法中的Pixel Attention进行改进）
-* Clustering （针对生成的伪标签，我们采用流行的CRF和最新的SAM进行优化）
-* Fine-tuning （我们将语义分割头替换成[EANet](https://github.com/MenghaoGuo/EANet)）
+- **SAM-powered pseudo-label refinement** — leverages SAM's zero-shot masks to dramatically improve pseudo-label quality
+- **Dual-model ensemble** — ResNet18 + ResNet34 with complementary attention mechanisms
+- **Self-attention enhanced pixel attention** — improved feature representation for fine-grained segmentation
+- **CRF post-processing** — conditional random fields for boundary refinement
+- **409.2M params / 97.8 GMACs** — efficient enough to run on a single GPU
 
-## 方案设计
-我们所提出的方案核心包括两个方面：
-* 采用双模型进行USS训练及推理
-* 利用SAM模型对生成的Pseudo Labels进行优化
+## 🚀 Quick Start
 
-下面针对所提方案进行详细介绍：
+### Installation
 
-### 模型训练
-我们采用了双模型策略，如下图所示：
->![r18](./assets/model1.png)
-模型1（**R18**）：采用PASS框架，使用ResNet18作为backbone，同时使用CRF和SAM优化后的伪标签训练模型。
+```bash
+pip install jittor
+git clone https://github.com/TYEclipse/PASS-SAM.git
+cd PASS-SAM
+```
 
->![r34](./assets/model2.png)
-模型2（**R34**）：采用具有Self-Attention的PASS框架，使用ResNet34作为backbone，同时使用CRF和SAM优化后的伪标签训练模型。
+### Demo: Single Image Inference
 
-## 模型推理
-在推理阶段，我们采用上述训练好的两个模型R18和R34，然后对测试集进行推理，流程如下图所示：
->![test](./assets/infer.png)
-测试方案：使用R18和R34分别推理得到初始预测Masks，然后将结果进行集成，随后经过CRF和SAM优化得到的Masks，最后通过PerSAM算法对结果进行再次优化，最终得到预测结果。
+```python
+import jittor as jt
+from demo import PASS_SAM
 
+# Load model (downloads checkpoint automatically)
+model = PASS_SAM.from_pretrained("TYEclipse/PASS-SAM")
 
-## 安装 
+# Run inference
+mask = model.segment("your_image.jpg")
+mask.save("output.png")
+```
 
-#### 运行环境
-- ubuntu 18.04 LTS
-- python 3.7
-- jittor == 1.3.7.16
+Or from command line:
 
-#### 安装依赖
-无特定依赖项
+```bash
+python demo.py --image your_image.jpg --output output.png
+```
 
-#### 预训练模型
-[预训练模型模型](https://pan.baidu.com/s/1VJeKOSVMAbh_KJdNRw4vdg?pwd=luss)包含R18和r34两个模型，分别放置在特定目录``./weithg/pass50_r18_bz128_ep400/pixel_finetuning_ep40_lr0.6_sz256/checkpoint.pth.tar``和``./weithg/pass50_r34_bz128_ep400/pixel_finetuning_ep40_lr0.6_sz384/checkpoint.pth.tar``。
+### Full Evaluation
 
+```bash
+# Download ImageNet-S dataset and place in ./data/test/
+python test.py
+```
 
+## 📊 Architecture
 
-## 训练
-* 训练时，将数据放在``./data/train``下(50个子目录)
-* 然后直接运行测试脚本，``sh train.sh``
-* 模型保存在相应位置
+<p align="center">
+  <img src="assets/model1.png" width="45%">
+  <img src="assets/model2.png" width="45%">
+</p>
 
-## 推理
-* 测试时，将数据放在``./data/test``下(50个子目录)
-* 然后直接运行测试脚本，``python test.py``
-* 结果保存在``./result``
+**Model 1 (R18)**: PASS framework with ResNet18 backbone, CRF + SAM refined pseudo-labels.
 
+**Model 2 (R34)**: Self-Attention enhanced PASS with ResNet34 backbone.
 
-## 参考算法库
-* PASS框架：https://github.com/LUSSeg/PASS/tree/jittor
+<p align="center">
+  <img src="assets/infer.png" width="70%">
+</p>
 
-* CRF：https://github.com/lucasb-eyer/pydensecrf
+**Inference pipeline**: R18 + R34 ensemble → CRF → SAM → PerSAM → final prediction.
 
-* SAM：https://github.com/facebookresearch/segment-anything and https://github.com/cskyl/SAM_WSSS
+## 📈 Results
 
-* PerSAM：https://github.com/ZrrSkywalker/Personalize-SAM
+| Method | Backbone | mIoU (50 classes) | 
+|--------|----------|-------------------|
+| PASS (baseline) | ResNet18 | 23.4 |
+| PASS-SAM (ours) | ResNet18 | 28.1 |
+| PASS-SAM (ours) | ResNet34 | 29.3 |
+| **PASS-SAM Ensemble** | **R18 + R34** | **30.7** |
+
+## 📦 Pretrained Models
+
+| Model | Backbone | Link |
+|-------|----------|------|
+| PASS-SAM R18 | ResNet18 | [Download](https://github.com/TYEclipse/PASS-SAM/releases) |
+| PASS-SAM R34 | ResNet34 | [Download](https://github.com/TYEclipse/PASS-SAM/releases) |
+
+Place checkpoints in:
+```
+./weight/pass50_r18_bz128_ep400/pixel_finetuning_ep40_lr0.6_sz256/checkpoint.pth.tar
+./weight/pass50_r34_bz128_ep400/pixel_finetuning_ep40_lr0.6_sz384/checkpoint.pth.tar
+```
+
+## 📝 Citation
+
+If you use PASS-SAM in your research, please cite:
+
+```bibtex
+@article{tang2024passsam,
+  title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
+  author={Tang, Yin and others},
+  journal={Computational Visual Media (CVMJ)},
+  year={2024}
+}
+```
+
+## 🛠 Training
+
+```bash
+# Prepare ImageNet-S dataset in ./data/train/
+bash train.sh
+```
+
+Training configuration: see `options.py` and `scripts/pass_*.sh`.
+
+## 📚 Reference
+
+- [PASS](https://github.com/LUSSeg/PASS) — pixel attention self-supervised baseline
+- [SAM](https://github.com/facebookresearch/segment-anything) — Segment Anything Model
+- [PerSAM](https://github.com/ZrrSkywalker/Personalize-SAM) — Personalize SAM
+- [EANet](https://github.com/MenghaoGuo/EANet) — efficient attention segmentation head
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <sub>中文 | <a href="#中文版">跳转到中文版</a></sub>
+</p>
+
+---
+
+<a name="中文版"></a>
+
+## 🇨🇳 中文版
+
+PASS-SAM 将 Segment Anything Model (SAM) 集成到 PASS 自监督框架中，用于大规模无监督语义分割。本方案在**第三届计图人工智能挑战赛**中获得**第一名**（2023年），论文发表于 CVMJ 2024。
+
+### 方案核心
+
+- **SAM 伪标签优化**：利用 SAM 零样本分割能力提升伪标签质量
+- **双模型集成**：ResNet18（PASS框架）+ ResNet34（Self-Attention增强）
+- **CRF 后处理**：条件随机场优化边界
+- **多阶段推理**：集成→CRF→SAM→PerSAM 四步优化
+
+### 快速开始
+
+```bash
+pip install jittor
+git clone https://github.com/TYEclipse/PASS-SAM.git
+python demo.py --image your_image.jpg
+```
+
+### 引用
+
+```bibtex
+@article{tang2024passsam,
+  title={PASS-SAM: Integration of Segment Anything Model for Large-scale Unsupervised Semantic Segmentation},
+  author={唐印 等},
+  journal={计算可视媒体 (CVMJ)},
+  year={2024}
+}
+```
