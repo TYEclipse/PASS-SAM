@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use PASS-SAM in your research, please cite the CVMJ 2025 paper."
+message: "If you use PASS-SAM, please cite the CVMJ 2025 paper below."
 authors:
   - family-names: "Tang"
     given-names: "Yin"
@@ -9,13 +9,27 @@ authors:
     given-names: "Gensheng"
   - family-names: "Wang"
     given-names: "Qiong"
-title: "PASS-SAM: Integration of Segment Anything Model for Large-Scale Unsupervised Semantic Segmentation"
-type: article
-journal: "Computational Visual Media"
-year: 2025
-volume: 11
-number: 3
-pages: "669-674"
-doi: "10.26599/CVM.2025.9450432"
-repository-code: "https://github.com/TYEclipse/PASS-SAM"
-abstract: "We integrate the Segment Anything Model (SAM) into the PASS self-supervised framework for large-scale unsupervised semantic segmentation, achieving 1st place in the 3rd Jittor AI Challenge."
+title: "PASS-SAM"
+version: 1.0.0
+date-released: 2025-06-20
+url: "https://github.com/TYEclipse/PASS-SAM"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Tang"
+      given-names: "Yin"
+    - family-names: "Chen"
+      given-names: "Rui"
+    - family-names: "Pei"
+      given-names: "Gensheng"
+    - family-names: "Wang"
+      given-names: "Qiong"
+  title: "PASS-SAM: Integration of Segment Anything Model for Large-Scale Unsupervised Semantic Segmentation"
+  doi: "10.26599/CVM.2025.9450432"
+  journal: "Computational Visual Media"
+  volume: 11
+  issue: 3
+  start: 669
+  end: 674
+  month: 6
+  year: 2025
