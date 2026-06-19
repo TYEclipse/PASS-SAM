@@ -161,3 +161,4 @@ cython_debug/
 
 # Model checkpoints (too large for git)
 weight/
+PASS-SAM/
